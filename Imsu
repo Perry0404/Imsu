@@ -1,0 +1,37 @@
+// Import necessary libraries
+const Web3 = require('web3');
+const contractABI = require('./contractABI.json'); // Replace with your contract ABI
+const contractAddress = '0x123456789...'; // Replace with your contract address
+
+// Connect to a local or remote Ethereum node
+const web3 = new Web3('http://localhost:8545'); // Replace with your node URL
+
+// Create an instance of the contract
+const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+// Example function to interact with the contract
+async function getData() {
+    try {
+        // Call a function on the contract
+        const result = await contract.methods.getData().call();
+        console.log('Data from contract:', result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Example function to send a transaction to the contract
+async function setData(newData) {
+    try {
+        // Send a transaction to the contract
+        const accounts = await web3.eth.getAccounts();
+        const result = await contract.methods.setData(newData).send({ from: accounts[0] });
+        console.log('Transaction hash:', result.transactionHash);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Usage example
+getData(); // Retrieve data from the contract
+setData('New data'); // Set new data on the contract
